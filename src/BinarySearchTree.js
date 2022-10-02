@@ -64,39 +64,6 @@ class BinarySearchTree {
     }
   }
 
-  _replaceWith(node) {
-    if (this.parent) {
-      if (this == this.parent.left) {
-        this.parent.left = node
-      } else if (this == this.parent.right) {
-        this.parent.right = node
-      }
-
-      if (node) {
-        node.parent = this.parent
-      }
-    } else {
-      if (node) {
-        this.key = node.key
-        this.value = node.value
-        this.left = node.left
-        this.right = node.right
-      } else {
-        this.key = null
-        this.value = null
-        this.left = null
-        this.right = null
-      }
-    }
-  }
-
-  _findMin() {
-    if (!this.left) {
-      return this
-    }
-    return this.left._findMin()
-  }
-
   dfsInOrder(values = []) {
     if (this.left) {
       values = this.left.dfsInOrder(values)
@@ -148,5 +115,51 @@ class BinarySearchTree {
       node = queue.dequeue()
     }
     return values
+  }
+
+  getHeight(currentHeight = 0) {
+    if (!this.left && !this.right) return currentHeight
+    const newHeight = currentHeight + 1
+
+    if (!this.left) return this.right.getHeight(newHeight)
+    if (!this.right) return this.left.getHeight(newHeight)
+
+    const leftHeight = this.left.getHeight(newHeight)
+    const rightHeight = this.left.getHeight(newHeight)
+
+    return Math.max(leftHeight, rightHeight)
+  }
+
+  _replaceWith(node) {
+    if (this.parent) {
+      if (this == this.parent.left) {
+        this.parent.left = node
+      } else if (this == this.parent.right) {
+        this.parent.right = node
+      }
+
+      if (node) {
+        node.parent = this.parent
+      }
+    } else {
+      if (node) {
+        this.key = node.key
+        this.value = node.value
+        this.left = node.left
+        this.right = node.right
+      } else {
+        this.key = null
+        this.value = null
+        this.left = null
+        this.right = null
+      }
+    }
+  }
+
+  _findMin() {
+    if (!this.left) {
+      return this
+    }
+    return this.left._findMin()
   }
 }
