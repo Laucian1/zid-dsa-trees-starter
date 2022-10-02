@@ -10,66 +10,33 @@ class BinarySearchTree {
   }
 
   insert(key, value) {
-    //If the tree is empty, then this key being inserted is the root node of the tree.
     if (this.key == null) {
       this.key = key
       this.value = value
-    }
-
-    /* If the tree already exists, then start at the root,
-       and compare it to the key that you want to insert.
-       If the new key is less than the node's key,
-       then the new node needs to live in the left-hand branch. */
-    else if (key < this.key) {
-      /* If the existing node does not have a left child,
-         meaning that the `left` pointer is empty,
-         then you can just instantiate and insert the new node
-         as the left child of that node, passing `this` as the parent. */
+    } else if (key < this.key) {
       if (this.left == null) {
         this.left = new BinarySearchTree(key, value, this)
-      }
-      /* If the node has an existing left child,
-         then you recursively call the `insert()` method
-         so that the node is added further down the tree. */
-      else {
+      } else {
         this.left.insert(key, value)
       }
-    }
-    /* Similarly, if the new key is greater than the node's key,
-       then you do the same thing, but on the right-hand side. */
-    else {
+    } else {
       if (this.right == null) {
         this.right = new BinarySearchTree(key, value, this)
-      }
-      else {
+      } else {
         this.right.insert(key, value)
       }
     }
   }
 
   find(key) {
-    // If the item is found at the root, then return that value.
     if (this.key == key) {
       return this.value
-    }
-    /* If the item that your are looking for is less than the root,
-       then follow the left child.
-       If there is an existing left child, 
-       then recursively check its left and/or right child
-       until you find the item. */
-    else if (key < this.key && this.left) {
+    } else if (key < this.key && this.left) {
       return this.left.find(key)
-    }
-    /* If the item that you are looking for is greater than the root,
-       then follow the right child.
-       If there is an existing right child,
-       then recursively check its left and/or right child
-       until you find the item. */
-    else if (key > this.key && this.right) {
+    } else if (key > this.key && this.right) {
       return this.right.find(key)
     }
-    //You have searched the tree, and the item isn't in the tree.
-    else {
+ else {
       throw new Error('Key Not Found')
     }
   }
@@ -81,31 +48,18 @@ class BinarySearchTree {
         this.key = successor.key
         this.value = successor.value
         successor.remove(successor.key)
-      }
-      /* If the node only has a left child,
-         then you replace the node with its left child. */
-      else if (this.left) {
+      } else if (this.left) {
         this._replaceWith(this.left)
-      }
-      /* And similarly, if the node only has a right child,
-         then you replace the node with its right child. */
-      else if (this.right) {
+      } else if (this.right) {
         this._replaceWith(this.right)
-      }
-      /* If the node has no children, then
-      simply remove it and any references to it
-      by calling `this._replaceWith(null)`. */
-      else {
+      } else {
         this._replaceWith(null)
       }
-    }
-    else if (key < this.key && this.left) {
+    } else if (key < this.key && this.left) {
       this.left.remove(key)
-    }
-    else if (key > this.key && this.right) {
+    } else if (key > this.key && this.right) {
       this.right.remove(key)
-    }
-    else {
+    } else {
       throw new Error('Key Not Found')
     }
   }
@@ -114,23 +68,20 @@ class BinarySearchTree {
     if (this.parent) {
       if (this == this.parent.left) {
         this.parent.left = node
-      }
-      else if (this == this.parent.right) {
+      } else if (this == this.parent.right) {
         this.parent.right = node
       }
 
       if (node) {
         node.parent = this.parent
       }
-    }
-    else {
+    } else {
       if (node) {
         this.key = node.key
         this.value = node.value
         this.left = node.left
         this.right = node.right
-      }
-      else {
+      } else {
         this.key = null
         this.value = null
         this.left = null
@@ -147,71 +98,50 @@ class BinarySearchTree {
   }
 
   dfsInOrder(values = []) {
-    //First, process the left node recursively
     if (this.left) {
       values = this.left.dfsInOrder(values)
     }
-
-    //Next, process the current node
     values.push(this.value)
-
-    //Finally, process the right node recursively
     if (this.right) {
       values = this.right.dfsInOrder(values)
     }
-
     return values
   }
 
   dfsPreOrder(values = []) {
-    //First, process the current node
     values.push(this.value)
-
-    //Next, process the left node recursively
     if (this.left) {
       values = this.left.dfsPreOrder(values)
     }
-
-    //Finally, process the right node recursively
     if (this.right) {
       values = this.right.dfsPreOrder(values)
     }
-
     return values
   }
 
   dfsPostOrder(values = []) {
-    //First, process the left node recursively
     if (this.left) {
       values = this.left.dfsPostOrder(values)
     }
-
-    //Next, process the right node recursively
     if (this.right) {
       values = this.right.dfsPostOrder(values)
     }
-
-    //Finally, process the current node
     values.push(this.value)
-
     return values
   }
 
   bfs(tree, values = []) {
     const queue = newQueue()
-    queue.enqueue(tree) //Start the traversal at the tree and add the tree node to the queue to kick off BFS
-    let node = queue.dequeue() //Remove from the queue
+    queue.enqueue(tree) 
+    let node = queue.dequeue() 
     while (node) {
-      values.push(node.value) //Add that vaule from the queue to an array
-
+      values.push(node.value) 
       if (node.left) {
-        queue.enqueue(node.left) //Add the left child to the queue
+        queue.enqueue(node.left) 
       }
-
       if (node.right) {
-        queue.enqueue(node.right) //Add the right child to the queue
+        queue.enqueue(node.right) 
       }
-
       return values
     }
   }
