@@ -131,18 +131,22 @@ class BinarySearchTree {
   }
 
   bfs(tree, values = []) {
-    const queue = newQueue()
+    const queue = new Queue()
     queue.enqueue(tree) 
+    console.log(queue.first.left, queue.first.right)
     let node = queue.dequeue() 
+    console.log(node)
     while (node) {
-      values.push(node.value) 
+      values.push(node.value)
+
       if (node.left) {
         queue.enqueue(node.left) 
       }
       if (node.right) {
         queue.enqueue(node.right) 
       }
-      return values
+      node = queue.dequeue()
     }
+    return values
   }
 }
